@@ -8,7 +8,7 @@ const themes = {
   parchment: { primary: 'bg-stone-800', border: 'border-stone-700', text: 'text-stone-900', accent: 'bg-amber-50', light: 'bg-stone-100' },
 };
 
-const Bill = ({ index, denomination, currencyName, bankName, motto, serialPrefix, currentTheme }) => (
+const Bill = ({ index, denomination, currencyName, bankName, motto, serialPrefix, federalReserve, currentTheme }) => (
   <div className={`relative w-[400px] h-[180px] p-2 m-2 border-4 ${currentTheme.border} ${currentTheme.light} shadow-lg overflow-hidden flex flex-col justify-between print:m-4 print:shadow-none`}>
     {/* Ornate Background Pattern */}
     <div className="absolute inset-0 opacity-5 pointer-events-none" style={{ backgroundImage: 'radial-gradient(#000 1px, transparent 1px)', backgroundSize: '10px 10px' }} />
@@ -16,7 +16,7 @@ const Bill = ({ index, denomination, currencyName, bankName, motto, serialPrefix
     {/* Corner Denominations */}
     <div className="flex justify-between items-start z-10">
       <div className={`text-xl font-serif font-bold ${currentTheme.text} border-2 ${currentTheme.border} px-2 rounded`}>{denomination}</div>
-      <div className="text-[10px] uppercase tracking-widest font-bold opacity-40">Federal Reserve of the Vault</div>
+      <div className="text-[10px] uppercase tracking-widest font-bold opacity-40">{federalReserve}</div>
       <div className={`text-xl font-serif font-bold ${currentTheme.text} border-2 ${currentTheme.border} px-2 rounded`}>{denomination}</div>
     </div>
 
@@ -41,7 +41,7 @@ const Bill = ({ index, denomination, currencyName, bankName, motto, serialPrefix
     <div className="flex justify-between items-end z-10 px-2 pb-1">
       <div className="flex flex-col items-start">
         <div className="text-[7px] uppercase font-bold opacity-50">Authorized Bank</div>
-        <div className="font-serif italic text-sm border-b border-black w-24 text-center overflow-hidden whitespace-nowrap">{bankName}</div>
+        <div className="font-serif italic text-[8px] leading-tight border-b border-black max-w-[80px] text-center break-words">{bankName}</div>
       </div>
       <div className="flex flex-col items-center">
         <div className="text-[9px] font-serif uppercase tracking-widest italic">{motto}</div>
@@ -65,10 +65,11 @@ const App = () => {
   const [bankName, setBankName] = useState('The Global Inquiry Vault');
   const [motto, setMotto] = useState('In Inquiry We Trust');
   const [colorTheme, setColorTheme] = useState('navy');
-  const serialPrefix = 'GIV';
+  const [serialPrefix, setSerialPrefix] = useState('GIV');
+  const [federalReserve, setFederalReserve] = useState('Federal Reserve of the Vault');
 
   const currentTheme = themes[colorTheme];
-  const billProps = { denomination, currencyName, bankName, motto, serialPrefix, currentTheme };
+  const billProps = { denomination, currencyName, bankName, motto, serialPrefix, federalReserve, currentTheme };
 
   return (
     <div className="min-h-screen bg-slate-100 flex flex-col md:flex-row p-4 md:p-8 gap-8 font-sans">
@@ -122,6 +123,30 @@ const App = () => {
               type="text"
               value={motto}
               onChange={(e) => setMotto(e.target.value)}
+              className="w-full p-2 border border-slate-200 rounded-lg text-sm focus:ring-2 focus:ring-slate-900 outline-none"
+            />
+          </div>
+
+          <div>
+            <label className="block text-xs font-bold uppercase text-slate-500 mb-1 flex items-center gap-1">
+              <Landmark size={12} /> Federal Reserve Name
+            </label>
+            <input
+              type="text"
+              value={federalReserve}
+              onChange={(e) => setFederalReserve(e.target.value)}
+              className="w-full p-2 border border-slate-200 rounded-lg text-sm focus:ring-2 focus:ring-slate-900 outline-none"
+            />
+          </div>
+
+          <div>
+            <label className="block text-xs font-bold uppercase text-slate-500 mb-1 flex items-center gap-1">
+              <RefreshCw size={12} /> Serial Prefix
+            </label>
+            <input
+              type="text"
+              value={serialPrefix}
+              onChange={(e) => setSerialPrefix(e.target.value)}
               className="w-full p-2 border border-slate-200 rounded-lg text-sm focus:ring-2 focus:ring-slate-900 outline-none"
             />
           </div>
